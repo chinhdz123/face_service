@@ -1,11 +1,6 @@
 from fastapi import FastAPI
 from fastapi import Request, Response
-
-
-
 app = FastAPI()
-
-
 
 @app.post("/api/camera/detected")
 async def add_camera(request: Request):
