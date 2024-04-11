@@ -21,13 +21,12 @@ while True:
     age_true = 0
     gender_true = 0
     while True:
-        print(f"Processing video stream for camera {CAM_ID}")
         ret, frame = cap.read()
         if not ret:
             cap.release()
             break
         start_time = datetime.now()
-        results = model.track(frame, persist=True)
+        results = model.track(frame, persist=True, verbose=False)
         if results[0].boxes.id is None:
             ids = []
         else:
@@ -71,11 +70,14 @@ while True:
 
             for key in list(track.keys()):
                 if track[id]["num_tracking"] == 2 :
-                    requests.post(URL_DETECT, 
-                                  json={"age": track[key]["age"], 
-                                  "emotion": track[key]["emotion"], 
-                                  "gender": track[key]["gender"],
-                                  "relationship": relationship})
+                    try:
+                        requests.post(URL_DETECT, 
+                                    json={"age": track[key]["age"], 
+                                    "emotion": track[key]["emotion"], 
+                                    "gender": track[key]["gender"],
+                                    "relationship": relationship})
+                    except:
+                        pass
                     
                 cv2.putText(frame, str(track[key]['age']), (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (36,255,12), 2)
                 cv2.putText(frame, track[key]['emotion'], (x, y-30), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (36,255,12), 2)
@@ -86,10 +88,12 @@ while True:
         for key in list(track.keys()):
             if key not in ids:
                 #api log
-                requests.post(URL_LOG, 
-                              json={"tracking_time": track[key]["tracking_time"]})
+                try:
+                    requests.post(URL_LOG, 
+                                json={"tracking_time": track[key]["tracking_time"]})
+                except:
+                    pass
                 track.pop(key)
-        print(frame.shape[:2])
         cv2.imshow('frame', frame)
         cv2.waitKey(1)
         
