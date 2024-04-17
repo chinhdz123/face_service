@@ -94,6 +94,6 @@ while True:
                 except:
                     pass
                 track.pop(key)
-        cv2.imshow('frame', frame)
-        cv2.waitKey(1)
+        # cv2.imshow('frame', frame)
+        # cv2.waitKey(1)
         
