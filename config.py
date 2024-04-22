@@ -1,8 +1,8 @@
 IP = "127.0.0.1"
 PORT = "5001"
-
-CAM_ID = 0
-# CAM_ID = "a.mp4"
+IS_SHOW = False # show video
+DEVICE = "cpu" # "cuda" if gpu
+CAM_ID = "0"
 
 URL_DETECT = f"http://{IP}:{PORT}/api/camera/detected"
 
