@@ -11,7 +11,7 @@ from timm.models._registry import is_model, model_entrypoint
 import os
 from timm.models._helpers import load_state_dict, remap_checkpoint
 import timm
-
+from config import *
 def class_letterbox(im, new_shape=(640, 640), color=(0, 0, 0), scaleup=True):
     # Resize and pad image while meeting stride-multiple constraints
     shape = im.shape[:2]  # current shape [height, width]
@@ -89,7 +89,7 @@ def create_model(
 
     if checkpoint_path:
         load_checkpoint(model, checkpoint_path, filter_keys=filter_keys, state_dict_map=state_dict_map)
-    model = model.to("cuda")
+    model = model.to(DEVICE)
     model.eval()
     return model
 
@@ -153,7 +153,7 @@ class Model():
         prepared_images: List[torch.tensor] = []
         prepared_images.append(img)
         prepared_input = torch.concat(prepared_images)
-        prepared_input = prepared_input.to("cuda")
+        prepared_input = prepared_input.to(DEVICE)
         with torch.no_grad():
             output = self.model(prepared_input)
 
@@ -164,7 +164,6 @@ class Model():
         age = age * (95 - 1) + 48
         age = round(age, 2)
         gender = "male" if gender_indx[0].item() == 0 else "female"
-        print(age, gender)
         return age, gender
     
 model_cls = Model()
