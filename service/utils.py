@@ -54,10 +54,12 @@ def get_relationship(genders):
         relationship = "couple"    
     return relationship
 
-def report_first_info(track, relationship):
+def report_first_info(track, relationship, face_id_select):
+    
     for key in list(track.keys()):
-        if track[key]["num_tracking"] == 2:
+        if track[key]["num_tracking"] == 2 and key in face_id_select:
             try:
+                print(track[key])
                 requests.post(
                     URL_DETECT,
                     json={
@@ -69,9 +71,10 @@ def report_first_info(track, relationship):
             except:
                 pass
 
-def report_final_info(track, ids):
+def report_final_info(track, face_id_select):
+    
     for key in list(track.keys()):
-        if key not in ids:
+        if key not in face_id_select:
             try:
                 requests.post(
                     URL_LOG,

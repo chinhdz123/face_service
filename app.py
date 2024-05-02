@@ -5,7 +5,7 @@ app = FastAPI()
 @app.post("/api/camera/detected")
 async def add_camera(request: Request):
     body = await request.json()
-    dict_face = {"age": body["age"], "emotion": body["emotion"], 'gender': body["gender"]}
+    dict_face = {"age": body["age"], 'gender': body["gender"]}
     print(dict_face)
     return Response(status_code=200, content="OK")
 
