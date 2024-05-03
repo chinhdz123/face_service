@@ -48,7 +48,10 @@ def draw(image, track, relationship):
         cv2.putText(image, relationship, (track_info["box"][0], track_info["box"][1] - 90), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (36, 255, 12), 2)
     return image
 
-def get_relationship(genders):
+def get_relationship(track):
+    genders = []
+    for key, track_info in track.items():
+        genders.append(track_info["gender"])
     relationship = "single"
     if len(set(genders)) > 1:
         relationship = "couple"    
@@ -59,7 +62,6 @@ def report_first_info(track, relationship, face_id_select):
     for key in list(track.keys()):
         if track[key]["num_tracking"] == 2 and key in face_id_select:
             try:
-                print(track[key])
                 requests.post(
                     URL_DETECT,
                     json={
